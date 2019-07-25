@@ -4,5 +4,5 @@ Rails.application.routes.draw do
   post 'sessions/new', as: :login
   get 'sessions/destroy', as: :logout
 
-  root 'welcome#index'
+  root to: 'welcome#index'
 end

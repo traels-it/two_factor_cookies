@@ -1,0 +1,25 @@
+<div class="row">
+  <div class="col-md-4">
+  </div>
+  <div class="col-md-4">
+    <h2><%= t('two_factor_authentication.show.header') %></h2>
+    <p><%= t('two_factor_authentication.show.help_text') %></p>
+    <%= form_with url: update_two_factor_authentication_path, method: :patch do |f| %>
+      <div class="input-group">
+        <span class="input-group-addon">*</span>
+        <%= f.text_field 'two_factor_authentication[one_time_password]', placeholder: t('two_factor_authentication.show.placeholder'), autofocus: true, class: 'form-control' %>
+      </div>
+      <br/>
+      <div class="row">
+        <div class="col-md-6">
+          <%= link_to t('two_factor_authentication.show.resend_code'), resend_code_two_factor_authentication_path, class: 'btn btn-default btn-block' %>
+        </div>
+        <div class="col-md-6">
+          <%= f.submit t('two_factor_authentication.show.submit_code'), class: 'btn btn-primary btn-block' %>
+        </div>
+      </div>
+    <% end %>
+  </div>
+  <div class="col-md-4">
+  </div>
+</div>

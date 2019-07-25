@@ -1,9 +1,7 @@
 module TwoFactorCookies
   class TwoFactorAuthenticationController < ApplicationController
     def show
-      p 'er jeg her'
       send_otp unless otp_already_sent?
-
 
       render :show, locals: { user: user }
     end
@@ -12,7 +10,7 @@ module TwoFactorCookies
       if otp_verified?
         set_authenticated_cookie
         authenticate_user!
-        redirect_to root_path
+        redirect_to main_app.root_path
       else
         flash[:alert] = I18n.t('two_factor_authentication.errors.wrong_one_time_password')
         redirect_to show_two_factor_authentication_path
@@ -77,8 +75,6 @@ module TwoFactorCookies
 
       def user
         user_id = session[:user_id] || session[:unauthenticated_user_id]
-        p "her er jeg"
-        p user_id
         User.find(user_id)
       end
 
