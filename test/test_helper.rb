@@ -19,10 +19,3 @@ if ActiveSupport::TestCase.respond_to?(:fixture_path=)
   ActiveSupport::TestCase.file_fixture_path = ActiveSupport::TestCase.fixture_path + "/files"
   ActiveSupport::TestCase.fixtures :all
 end
-
-
-class ActionDispatch::IntegrationTest
-  def login(user)
-    post login_url, params: { user: user.username, pass: user.password }
-  end
-end
