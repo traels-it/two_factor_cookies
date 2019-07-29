@@ -1,4 +1,3 @@
-
 module TwoFactorCookies
   class ToggleTwoFactorController < TwoFactorCookies::TwoFactorAuthenticationController
     def update
@@ -14,19 +13,20 @@ module TwoFactorCookies
         flash[:alert] = I18n.t('two_factor_authentication.confirm_phone_number.flash.wrong_one_time_password')
       end
 
-      redirect_to edit_customer_path(current_user.id.to_i)
+      redirect_to main_app.edit_user_path(current_user.id.to_i)
     end
 
     def toggle_two_factor
-      current_user.update(toggle_two_factor_params)
       if toggle_two_factor_params[:enabled_two_factor] == '1'
         # TODO: Validate the phone number before attempting to send text
+        current_user.enable_two_factor!
         set_authenticated_cookie
       else
+        current_user.disable_two_factor!
         current_user.disaffirm_phone_number!
       end
 
-      redirect_to edit_customer_path(current_user.id.to_i)
+      redirect_to main_app.edit_user_path(current_user.id.to_i)
     end
 
     def resend_code
@@ -43,6 +43,10 @@ module TwoFactorCookies
 
       def toggle_two_factor_params
         params.require(:user).permit(:enabled_two_factor)
+      end
+
+      def user
+        current_user
       end
   end
 end

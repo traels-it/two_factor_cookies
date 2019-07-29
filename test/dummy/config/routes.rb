@@ -4,5 +4,7 @@ Rails.application.routes.draw do
   post 'sessions/new', as: :login
   get 'sessions/destroy', as: :logout
 
+  get 'users/:id/edit', to: 'users#edit', as: :edit_user
+
   root to: 'welcome#index'
 end

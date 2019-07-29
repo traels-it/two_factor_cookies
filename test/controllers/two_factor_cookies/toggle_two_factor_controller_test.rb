@@ -4,11 +4,10 @@ module TwoFactorCookies
   class ToggleTwoFactorControllerTest < ActionDispatch::IntegrationTest
     include Engine.routes.url_helpers
 
-    let(:user) { User.create(username: 'user@email.com', password: 'password', phone: '12341234') }
+    let(:user) { User.create(username: 'username', password: 'password', phone: '+4512341234', confirmed_phone_number: false, enabled_two_factor: false) }
 
     before do
       TwoFactorCookies::TextMessage.stubs(:send)
-      User.stubs(:find).returns(user)
     end
 
     describe('#update') do
@@ -30,20 +29,20 @@ module TwoFactorCookies
     end
 
     describe '#toggle_two_factor' do
-      it 'updates the user if enable_two_factor is true' do
-        patch toggle_two_factor_path(user_id: user.id), params: { user: { two_factor_enabled: '1'}, user_id: user.id}
+      it 'updates the user if enabled_two_factor param is true' do
+        patch toggle_two_factor_path(user_id: user.id), params: { user: { enabled_two_factor: '1'}, user_id: user.id}
         user.reload
 
-        assert user.two_factor_enabled?
+        assert user.enabled_two_factor?
       end
 
-      it 'disables two factor if enable two factor is missing' do
+      it 'disables two factor and disaffirms phone number otherwise' do
         user.update(confirmed_phone_number: true)
 
-        patch toggle_two_factor_path(user_id: user.id), params: { user: { two_factor_enabled: '0'}, user_id: user.id}
+        patch toggle_two_factor_path(user_id: user.id), params: { user: { enabled_two_factor: '0'}, user_id: user.id}
         user.reload
 
-        assert_not user.two_factor_enabled?
+        assert_not user.enabled_two_factor?
         assert_not user.confirmed_phone_number?
       end
     end
