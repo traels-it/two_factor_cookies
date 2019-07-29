@@ -1,7 +1,8 @@
 module TwoFactorCookies
   class Configuration
-    attr_accessor :otp_generation_secret_key, :two_factor_authentication_success_route, :confirm_phone_number_success_route, :toggle_two_factor_success_route,
-      :two_factor_authentication_expiry, :otp_expiry
+    attr_accessor :otp_generation_secret_key, :two_factor_authentication_success_route, :confirm_phone_number_success_route,
+      :toggle_two_factor_success_route, :two_factor_authentication_expiry, :otp_expiry, :twilio_account_sid,
+      :twilio_phone_number, :twilio_auth_token, :phone_number_field_name
 
     def initialize
       @otp_generation_secret_key = nil
@@ -10,6 +11,10 @@ module TwoFactorCookies
       @confirm_phone_number_success_route = nil
       @two_factor_authentication_expiry = nil
       @otp_expiry = nil
+      @twilio_account_sid = nil
+      @twilio_phone_number = nil
+      @twilio_auth_token = nil
+      @phone_number_field_name = :phone_number
     end
   end
 end
