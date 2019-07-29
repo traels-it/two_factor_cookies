@@ -1,6 +1,7 @@
-require "two_factor_cookies/configuration"
-require "two_factor_cookies/engine"
-require "rotp"
+require 'two_factor_cookies/configuration'
+require 'two_factor_cookies/engine'
+require 'rotp'
+require 'twilio-ruby'
 
 module TwoFactorCookies
   class << self

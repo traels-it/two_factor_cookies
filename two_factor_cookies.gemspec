@@ -27,6 +27,7 @@ Gem::Specification.new do |spec|
 
   spec.add_dependency "rails", "~> 6.0.0.rc2"
   spec.add_dependency 'rotp', '5.1.0'
+  spec.add_dependency 'twilio-ruby', '~> 5.25.2'
 
   spec.add_development_dependency 'm'
   spec.add_development_dependency 'minitest-spec-rails'
