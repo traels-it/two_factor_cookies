@@ -57,7 +57,7 @@ module TwoFactorCookies
             approved: true,
             user_name: user.username
           ),
-          expires: 30.days.from_now
+          expires: TwoFactorCookies.configuration.two_factor_authentication_expiry
         }
       end
 
@@ -65,7 +65,7 @@ module TwoFactorCookies
         cookies.delete(:mfa)
         cookies.encrypted[:mfa] = {
           value: JSON.generate(seed: seed, user_name: user.username),
-          expires: 30.minutes.from_now
+          expires: TwoFactorCookies.configuration.otp_expiry
         }
       end
 
