@@ -1,5 +1,5 @@
 class User < ApplicationRecord
-  def self.logon(username, password)
+  def self.logon(_username, _password)
     true
   end
 
@@ -10,6 +10,16 @@ class User < ApplicationRecord
 
   def confirm_phone_number!
     self.confirmed_phone_number = true
+    save
+  end
+
+  def enable_two_factor!
+    self.enabled_two_factor = true
+    save
+  end
+
+  def disable_two_factor!
+    self.enabled_two_factor = false
     save
   end
 end
