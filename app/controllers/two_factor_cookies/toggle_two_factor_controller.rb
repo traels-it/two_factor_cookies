@@ -8,9 +8,9 @@ module TwoFactorCookies
         current_user.confirm_phone_number!
 
         set_authenticated_cookie
-        flash[:notice] = I18n.t('two_factor_authentication.confirm_phone_number.flash.confirmed')
+        flash[:notice] = I18n.t('two_factor_cookies.confirm_phone_number.flash.confirmed')
       else
-        flash[:alert] = I18n.t('two_factor_authentication.confirm_phone_number.flash.wrong_one_time_password')
+        flash[:alert] = I18n.t('two_factor_cookies.confirm_phone_number.flash.wrong_one_time_password')
       end
 
       redirect_to main_app.public_send(

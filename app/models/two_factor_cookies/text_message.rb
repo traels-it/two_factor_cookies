@@ -6,7 +6,7 @@ module TwoFactorCookies
           File.open(Rails.root.join('tmp', 'otp.txt'), 'w') { |file| file.write code }
         else
           client.messages.create(
-            body: I18n.t('two_factor_authentication.text_message.one_time_password', code: code),
+            body: I18n.t('two_factor_cookies.text_message.one_time_password', code: code),
             from: TwoFactorCookies.configuration.twilio_phone_number,
             to: user.public_send(TwoFactorCookies.configuration.phone_number_field_name)
           )

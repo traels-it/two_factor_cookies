@@ -1,0 +1,16 @@
+en:
+  two_factor_cookies:
+    show:
+      placeholder: One Time Password
+      header: One Time Password
+      help_text: Type the one time password, you have received in a text
+      resend_code: Resend code
+      submit_code: Verify code
+    text_message:
+      one_time_password: Your one time password is %{code}
+    errors:
+      wrong_one_time_password: Wrong code - try again
+    confirm_phone_number:
+      flash:
+        confirmed: Phone number confirmed
+        wrong_one_time_password: Wrong code - try again

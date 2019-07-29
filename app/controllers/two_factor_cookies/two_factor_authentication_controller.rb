@@ -12,7 +12,7 @@ module TwoFactorCookies
         authenticate_user!
         redirect_to main_app.root_path
       else
-        flash[:alert] = I18n.t('two_factor_authentication.errors.wrong_one_time_password')
+        flash[:alert] = I18n.t('two_factor_cookies.errors.wrong_one_time_password')
         redirect_to show_two_factor_authentication_path
       end
     end
@@ -44,7 +44,7 @@ module TwoFactorCookies
         generated = TwoFactorCookies::OneTimePasswordGenerator.generate_code
         TwoFactorCookies::TextMessage.send(
           code: generated[:code],
-          customer: user
+          user: user
         )
 
         set_seed_cookie(generated[:seed])
