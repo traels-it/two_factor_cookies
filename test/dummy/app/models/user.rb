@@ -1,6 +1,8 @@
 class User < ApplicationRecord
-  def self.logon(_username, _password)
-    true
+  def self.logon(username, password)
+    return nil unless username && password
+
+    find_by(username: username, password: password)
   end
 
   def disaffirm_phone_number!
