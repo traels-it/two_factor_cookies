@@ -13,7 +13,9 @@ module TwoFactorCookies
         flash[:alert] = I18n.t('two_factor_authentication.confirm_phone_number.flash.wrong_one_time_password')
       end
 
-      redirect_to main_app.public_send(TwoFactorCookies.configuration.confirm_phone_number_success_route)
+      redirect_to main_app.public_send(
+        TwoFactorCookies.configuration.confirm_phone_number_success_route,
+        current_user.id.to_i)
     end
 
     def toggle_two_factor
@@ -27,7 +29,7 @@ module TwoFactorCookies
       end
 
       redirect_to main_app.public_send(
-        TwoFactorCookies.configuration.two_factor_success_route, current_user.id.to_i
+        TwoFactorCookies.configuration.toggle_two_factor_success_route, current_user.id.to_i
       )
     end
 
