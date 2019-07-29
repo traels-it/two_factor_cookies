@@ -55,7 +55,7 @@ module TwoFactorCookies
         cookies.encrypted[:mfa] = {
           value: JSON.generate(
             approved: true,
-            user_name: user.username
+            user_name: user.public_send(TwoFactorCookies.configuration.username_field_name)
           ),
           expires: TwoFactorCookies.configuration.two_factor_authentication_expiry
         }
@@ -64,7 +64,7 @@ module TwoFactorCookies
       def set_seed_cookie(seed)
         cookies.delete(:mfa)
         cookies.encrypted[:mfa] = {
-          value: JSON.generate(seed: seed, user_name: user.username),
+          value: JSON.generate(seed: seed, user_name: user.public_send(TwoFactorCookies.configuration.username_field_name)),
           expires: TwoFactorCookies.configuration.otp_expiry
         }
       end
@@ -75,7 +75,7 @@ module TwoFactorCookies
 
       def user
         user_id = session[:user_id] || session[:unauthenticated_user_id]
-        User.find(user_id)
+        TwoFactorCookies.configuration.user_model_name.constantize.find(user_id)
       end
 
       def authenticate_user!

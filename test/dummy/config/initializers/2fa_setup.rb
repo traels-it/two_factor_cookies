@@ -16,6 +16,8 @@ TwoFactorCookies.configure do |config|
   config.twilio_phone_number = ENV['TWILIO_PHONE_NUMBER']
   config.twilio_auth_token = ENV['TWILIO_AUTH_TOKEN']
 
-  # name of the phone number getter on the user model
+  # user model
+  config.user_model_name = 'User'
   config.phone_number_field_name = :phone
+  config.username_field_name = :username
 end
