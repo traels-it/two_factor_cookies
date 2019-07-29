@@ -10,7 +10,7 @@ module TwoFactorCookies
       if otp_verified?
         set_authenticated_cookie
         authenticate_user!
-        redirect_to main_app.root_path
+        redirect_to main_app.public_send(TwoFactorCookies.configuration.two_factor_authentication_success_route)
       else
         flash[:alert] = I18n.t('two_factor_cookies.errors.wrong_one_time_password')
         redirect_to show_two_factor_authentication_path
