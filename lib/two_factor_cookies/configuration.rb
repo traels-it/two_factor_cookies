@@ -9,8 +9,8 @@ module TwoFactorCookies
       @two_factor_authentication_success_route = nil
       @toggle_two_factor_success_route = nil
       @confirm_phone_number_success_route = nil
-      @two_factor_authentication_expiry = nil
-      @otp_expiry = nil
+      @two_factor_authentication_expiry = 30.days.from_now
+      @otp_expiry = 30.minutes.from_now
       @twilio_account_sid = nil
       @twilio_phone_number = nil
       @twilio_auth_token = nil
