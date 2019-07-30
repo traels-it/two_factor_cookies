@@ -85,7 +85,7 @@ module TwoFactorCookies
 
       def user_model
         user_model = ""
-        user_model += "#{TwoFactorCookies.configuration.user_model_namespace.to_s.capitalize}::" if TwoFactorCookies.configuration.user_model_namespace
+        user_model += "#{TwoFactorCookies.configuration.user_model_namespace.to_s}::" if TwoFactorCookies.configuration.user_model_namespace
         user_model += TwoFactorCookies.configuration.user_model_name.to_s.capitalize
         user_model.constantize
       end

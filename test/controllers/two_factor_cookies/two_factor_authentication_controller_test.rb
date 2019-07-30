@@ -95,7 +95,7 @@ module TwoFactorCookies
           config.twilio_auth_token = ENV['TWILIO_AUTH_TOKEN']
 
           # user model
-          config.user_model_namespace = :namespace
+          config.user_model_namespace = 'Namespace'
           config.user_model_name = :user
           config.phone_number_field_name = :phone
           config.username_field_name = :username
