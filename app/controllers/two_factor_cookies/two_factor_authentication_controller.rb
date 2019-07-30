@@ -75,12 +75,19 @@ module TwoFactorCookies
 
       def user
         user_id = session[:user_id] || session[:unauthenticated_user_id]
-        TwoFactorCookies.configuration.user_model_name.to_s.capitalize.constantize.find(user_id)
+        user_model.find(user_id)
       end
 
       def authenticate_user!
         session[:user_id] = user.to_param
         session.delete(:unauthenticated_user_id)
+      end
+
+      def user_model
+        user_model = ""
+        user_model += "#{TwoFactorCookies.configuration.user_model_namespace.to_s.capitalize}::" if TwoFactorCookies.configuration.user_model_namespace
+        user_model += TwoFactorCookies.configuration.user_model_name.to_s.capitalize
+        user_model.constantize
       end
   end
 end
