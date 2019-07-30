@@ -46,7 +46,7 @@ module TwoFactorCookies
       end
 
       def toggle_two_factor_params
-        params.require(:user).permit(:enabled_two_factor)
+        params.require(TwoFactorCookies.configuration.user_model_name).permit(:enabled_two_factor)
       end
 
       def user

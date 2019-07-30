@@ -75,7 +75,7 @@ module TwoFactorCookies
 
       def user
         user_id = session[:user_id] || session[:unauthenticated_user_id]
-        TwoFactorCookies.configuration.user_model_name.constantize.find(user_id)
+        TwoFactorCookies.configuration.user_model_name.to_s.capitalize.constantize.find(user_id)
       end
 
       def authenticate_user!
