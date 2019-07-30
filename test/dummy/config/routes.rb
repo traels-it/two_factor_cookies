@@ -6,5 +6,6 @@ Rails.application.routes.draw do
 
   get 'users/:id/edit', to: 'users#edit', as: :edit_user
 
+  get 'welcome/show', to: 'welcome#show', as: :show
   root to: 'welcome#index'
 end

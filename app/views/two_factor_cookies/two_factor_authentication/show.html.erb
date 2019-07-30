@@ -4,7 +4,7 @@
   <div class="col-md-4">
     <h2><%= t('two_factor_cookies.show.header') %></h2>
     <p><%= t('two_factor_cookies.show.help_text') %></p>
-    <%= form_with url: update_two_factor_authentication_path, method: :patch do |f| %>
+    <%= form_with url: two_factor_cookies.update_two_factor_authentication_path, method: :patch do |f| %>
       <div class="input-group">
         <span class="input-group-addon">*</span>
         <%= f.text_field 'two_factor_authentication[one_time_password]', placeholder: t('two_factor_cookies.show.placeholder'), autofocus: true, class: 'form-control' %>
@@ -12,7 +12,7 @@
       <br/>
       <div class="row">
         <div class="col-md-6">
-          <%= link_to t('two_factor_cookies.show.resend_code'), resend_code_two_factor_authentication_path, class: 'btn btn-default btn-block' %>
+          <%= link_to t('two_factor_cookies.show.resend_code'), two_factor_cookies.resend_code_two_factor_authentication_path, class: 'btn btn-default btn-block' %>
         </div>
         <div class="col-md-6">
           <%= f.submit t('two_factor_cookies.show.submit_code'), class: 'btn btn-primary btn-block' %>

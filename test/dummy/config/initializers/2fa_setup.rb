@@ -17,7 +17,13 @@ TwoFactorCookies.configure do |config|
   config.twilio_auth_token = ENV['TWILIO_AUTH_TOKEN']
 
   # user model
+  # config.user_model_namespace = nil
   config.user_model_name = :user
   config.phone_number_field_name = :phone
   config.username_field_name = :username
+
+  # In order to know which user is attempting to login, the two factor authentication controller checks current_user. It
+  # looks at its parent for this method. The default parent is ApplicationController. If you use devise or have
+  # implemented current_user elsewhere, you need to supply the parent constant here
+  # config.two_factor_authentication_controller_parent = ApplicationController
 end

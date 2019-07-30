@@ -1,5 +1,5 @@
-module TwoFactorCookies
-  class TwoFactorAuthenticationController < ApplicationController
+TwoFactorCookies.const_set('TwoFactorAuthenticationController',
+  Class.new(TwoFactorCookies.configuration.two_factor_authentication_controller_parent) do
     def show
       send_otp unless otp_already_sent?
 
@@ -13,14 +13,14 @@ module TwoFactorCookies
         redirect_to main_app.public_send(TwoFactorCookies.configuration.two_factor_authentication_success_route)
       else
         flash[:alert] = I18n.t('two_factor_cookies.errors.wrong_one_time_password')
-        redirect_to show_two_factor_authentication_path
+        redirect_to two_factor_cookies.show_two_factor_authentication_path
       end
     end
 
     def resend_code
       send_otp
 
-      redirect_to show_two_factor_authentication_path
+      redirect_to two_factor_cookies.show_two_factor_authentication_path
     end
 
     private
@@ -92,4 +92,4 @@ module TwoFactorCookies
         user_model.constantize
       end
   end
-end
+)

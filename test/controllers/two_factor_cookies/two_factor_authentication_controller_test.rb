@@ -59,7 +59,7 @@ module TwoFactorCookies
         patch two_factor_cookies.update_two_factor_authentication_path, params: good_params
 
         assert_response :redirect
-        assert_redirected_to controller: 'two_factor_authentication', action: 'show'
+        assert_redirected_to two_factor_cookies.show_two_factor_authentication_path
       end
     end
 
@@ -75,7 +75,32 @@ module TwoFactorCookies
         get two_factor_cookies.resend_code_two_factor_authentication_path
 
         assert_response :redirect
-        assert_redirected_to controller: 'two_factor_authentication', action: 'show'
+        assert_redirected_to two_factor_cookies.show_two_factor_authentication_path
+      end
+    end
+
+    describe 'standard inheritance' do
+      it 'inherits from ApplicationController as standard' do
+        assert_equal ApplicationController, TwoFactorCookies::TwoFactorAuthenticationController.superclass
+      end
+    end
+
+    describe 'configured inheritance' do
+      before do
+        TwoFactorCookies.configure do |config|
+          config.two_factor_authentication_controller_parent = AnotherApplicationController
+        end
+      end
+
+      after do
+        TwoFactorCookies.configure do |config|
+          config.two_factor_authentication_controller_parent = ApplicationController
+        end
+      end
+
+      it 'inherits from the class it is configured to' do
+        skip 'this test only works when running on its own'
+        assert_equal AnotherApplicationController, TwoFactorCookies::TwoFactorAuthenticationController.superclass
       end
     end
 
@@ -86,7 +111,7 @@ module TwoFactorCookies
         login user
         follow_redirect!
 
-        get show_two_factor_authentication_path
+        get two_factor_cookies.show_two_factor_authentication_path
 
         assert_response :success
       end
@@ -101,59 +126,19 @@ module TwoFactorCookies
     end
 
     describe 'it handles namespaced user models' do
-      let(:user) { Namespace::User.create(username: 'user@email.com', password: 'password', phone: '12341234') }
+      let(:user) { Namespace::User.create(username: 'user@email.com', password: 'password', phone: '12341234', confirmed_phone_number: true, enabled_two_factor: true) }
 
       before do
         TwoFactorCookies.configure do |config|
-          # otp generation and verification
-          config.otp_generation_secret_key = 'AXFGXT27ZK4PFSPWOD5COTZ6D56SPNYH'
-
-          # controllers
-          config.two_factor_authentication_success_route = :root_path
-          config.toggle_two_factor_success_route = :edit_user_path
-          config.confirm_phone_number_success_route = :edit_user_path
-
-          # cookie expiry
-          config.two_factor_authentication_expiry = 30.days.from_now
-          config.otp_expiry = 30.minutes.from_now
-
-          # text message sending
-          config.twilio_account_sid = ENV['TWILIO_ACCOUNT_SID']
-          config.twilio_phone_number = ENV['TWILIO_PHONE_NUMBER']
-          config.twilio_auth_token = ENV['TWILIO_AUTH_TOKEN']
-
-          # user model
           config.user_model_namespace = 'Namespace'
           config.user_model_name = :user
-          config.phone_number_field_name = :phone
-          config.username_field_name = :username
         end
       end
 
       after do
         TwoFactorCookies.configure do |config|
-          # otp generation and verification
-          config.otp_generation_secret_key = 'AXFGXT27ZK4PFSPWOD5COTZ6D56SPNYH'
-
-          # controllers
-          config.two_factor_authentication_success_route = :root_path
-          config.toggle_two_factor_success_route = :edit_user_path
-          config.confirm_phone_number_success_route = :edit_user_path
-
-          # cookie expiry
-          config.two_factor_authentication_expiry = 30.days.from_now
-          config.otp_expiry = 30.minutes.from_now
-
-          # text message sending
-          config.twilio_account_sid = ENV['TWILIO_ACCOUNT_SID']
-          config.twilio_phone_number = ENV['TWILIO_PHONE_NUMBER']
-          config.twilio_auth_token = ENV['TWILIO_AUTH_TOKEN']
-
-          # user model
           config.user_model_namespace = nil
           config.user_model_name = :user
-          config.phone_number_field_name = :phone
-          config.username_field_name = :username
         end
       end
 
