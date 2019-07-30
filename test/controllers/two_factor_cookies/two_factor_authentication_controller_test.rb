@@ -4,47 +4,50 @@ module TwoFactorCookies
   class TwoFactorAuthenticationControllerTest < ActionDispatch::IntegrationTest
     include Engine.routes.url_helpers
 
-    let(:user) { User.create(username: 'user@email.com', password: 'password', phone: '12341234') }
+    let(:user) { User.create(username: 'user@email.com', password: 'password', phone: '12341234', confirmed_phone_number: true, enabled_two_factor: true) }
 
     before do
       TwoFactorCookies::TextMessage.stubs(:send)
-      User.stubs(:find).returns(user)
     end
 
     describe '#show' do
       it 'sends a text with otp to the phone number of the user' do
         TwoFactorCookies::TextMessage.expects(:send)
 
-        get show_two_factor_authentication_path
+        login user
+        follow_redirect!
 
         assert_response :success
       end
 
       it 'only sends a text if there is no seed stored in cookies' do
         TwoFactorCookies::TextMessage.expects(:send)
+        login user
 
-        get show_two_factor_authentication_path
-        get show_two_factor_authentication_path
+        get two_factor_cookies.show_two_factor_authentication_path
 
         assert_response :success
       end
     end
 
     describe '#update' do
+      before do
+        login user
+        follow_redirect!
+      end
+
       let(:good_params) { { two_factor_authentication: { one_time_password: '123321' } } }
 
       it 'validates the user submitted one time password against the seed stored in session' do
-        get show_two_factor_authentication_path
         TwoFactorCookies::OneTimePasswordGenerator.expects(:verify_code).returns(true)
 
-        patch update_two_factor_authentication_path, params: good_params
+        patch two_factor_cookies.update_two_factor_authentication_path, params: good_params
       end
 
       it 'redirects to root on success' do
         TwoFactorCookies::OneTimePasswordGenerator.expects(:verify_code).returns(true)
 
-        get show_two_factor_authentication_path
-        patch update_two_factor_authentication_path, params: good_params
+        patch two_factor_cookies.update_two_factor_authentication_path, params: good_params
 
         assert_response :redirect
         #assert_redirected_to main_app.root_path
@@ -53,8 +56,7 @@ module TwoFactorCookies
       it 'redirects to two factor authentication show on failure and shows a error' do
         TwoFactorCookies::OneTimePasswordGenerator.expects(:verify_code).returns(false)
 
-        get show_two_factor_authentication_path
-        patch update_two_factor_authentication_path, params: good_params
+        patch two_factor_cookies.update_two_factor_authentication_path, params: good_params
 
         assert_response :redirect
         assert_redirected_to controller: 'two_factor_authentication', action: 'show'
@@ -62,13 +64,31 @@ module TwoFactorCookies
     end
 
     describe '#resend_code' do
+      before do
+        login user
+        follow_redirect!
+      end
+
       it 'generates and sends a new code' do
         TwoFactorCookies::TextMessage.expects(:send)
 
-        get resend_code_two_factor_authentication_path
+        get two_factor_cookies.resend_code_two_factor_authentication_path
 
         assert_response :redirect
         assert_redirected_to controller: 'two_factor_authentication', action: 'show'
+      end
+    end
+
+    describe 'user' do
+      it 'uses current_user if current_user exists' do
+        ApplicationController.stubs(:current_user).returns(user)
+
+        get show_two_factor_authentication_path
+
+        assert_response :success
+      end
+
+      it 'looks in the session for user_id or unauthenticated_id, when there is no current_user' do
       end
     end
 
