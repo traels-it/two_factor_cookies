@@ -74,8 +74,10 @@ module TwoFactorCookies
       end
 
       def user
+        return current_user if current_user.present?
+
         user_id = session[:user_id] || session[:unauthenticated_user_id]
-        user_model.find(user_id)
+        @user ||= user_model.find(user_id)
       end
 
       def authenticate_user!
@@ -84,8 +86,8 @@ module TwoFactorCookies
       end
 
       def user_model
-        user_model = ""
-        user_model += "#{TwoFactorCookies.configuration.user_model_namespace.to_s}::" if TwoFactorCookies.configuration.user_model_namespace
+        user_model = ''
+        user_model += "#{TwoFactorCookies.configuration.user_model_namespace}::" if TwoFactorCookies.configuration.user_model_namespace
         user_model += TwoFactorCookies.configuration.user_model_name.to_s.capitalize
         user_model.constantize
       end

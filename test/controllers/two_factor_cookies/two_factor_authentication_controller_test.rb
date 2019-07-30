@@ -81,7 +81,10 @@ module TwoFactorCookies
 
     describe 'user' do
       it 'uses current_user if current_user exists' do
-        ApplicationController.stubs(:current_user).returns(user)
+        ApplicationController.any_instance.stubs(:current_user).returns(user)
+        TwoFactorCookies::TwoFactorAuthenticationController.any_instance.expects(:user_model).never
+        login user
+        follow_redirect!
 
         get show_two_factor_authentication_path
 
@@ -89,6 +92,11 @@ module TwoFactorCookies
       end
 
       it 'looks in the session for user_id or unauthenticated_id, when there is no current_user' do
+        TwoFactorCookies::TwoFactorAuthenticationController.any_instance.expects(:user_model).returns(User)
+        login user
+        follow_redirect!
+
+        assert_response :success
       end
     end
 
