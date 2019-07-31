@@ -27,4 +27,10 @@ TwoFactorCookies.configure do |config|
   # looks at its parent for this method. The default parent is ApplicationController. If you use devise or have
   # implemented current_user elsewhere, you need to supply the parent constant here
   # config.two_factor_authentication_controller_parent = ApplicationController
+
+  # If you check for additional values when determining if a user is authenticated, you need to tell the controller how
+  # to determine these values. Add a hash of key-value pairs here, where the key is the name, you want in the cookie,
+  # the value is the method used to find whatever value you want as a string. Example:
+  # { customer_no: 'current_customer.customer_no' }
+  # config.additional_authentication_values = nil
 end

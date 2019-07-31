@@ -151,5 +151,29 @@ module TwoFactorCookies
         assert_response :success
       end
     end
+
+    describe 'it places any additional authentication values defined in configuration in the mfa cookie' do
+      let(:good_params) { { two_factor_authentication: { one_time_password: '123321' } } }
+
+      before do
+        login user
+        follow_redirect!
+        TwoFactorCookies.configure do |config|
+          config.additional_authentication_values = { customer_no: 'current_company.customer_no' }
+        end
+      end
+
+      after do
+        TwoFactorCookies.configure do |config|
+          config.additional_authentication_values = nil
+        end
+      end
+
+      it 'is not automatically tested, because I do not know how, as integration tests have no access to the cookies...' do
+        TwoFactorCookies::OneTimePasswordGenerator.expects(:verify_code).returns(true)
+
+        patch two_factor_cookies.update_two_factor_authentication_path, params: good_params
+      end
+    end
   end
 end

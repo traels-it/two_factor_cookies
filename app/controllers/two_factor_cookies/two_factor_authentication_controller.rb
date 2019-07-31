@@ -58,9 +58,7 @@ TwoFactorCookies.const_set('TwoFactorAuthenticationController',
         cookies.delete(:mfa)
         cookies.encrypted[:mfa] = {
           value: JSON.generate(
-            approved: true,
-            user_name: user.public_send(TwoFactorCookies.configuration.username_field_name)
-            #customer_no: current_company.customer_no
+            standard_values.merge(additional_authentication_values)
           ),
           expires: TwoFactorCookies.configuration.two_factor_authentication_expiry
         }
@@ -95,6 +93,24 @@ TwoFactorCookies.const_set('TwoFactorAuthenticationController',
         user_model += "#{TwoFactorCookies.configuration.user_model_namespace}::" if TwoFactorCookies.configuration.user_model_namespace
         user_model += TwoFactorCookies.configuration.user_model_name.to_s.capitalize
         user_model.constantize
+      end
+
+      def standard_values
+        {
+          approved: true,
+          user_name: user.public_send(TwoFactorCookies.configuration.username_field_name)
+        }
+      end
+
+      def additional_authentication_values
+        return {} unless TwoFactorCookies.configuration.additional_authentication_values
+
+        # TODO: Is there a better way, than to use eval?
+        additional_values = {}
+        TwoFactorCookies.configuration.additional_authentication_values.each_pair do |key, value|
+          additional_values.store(key, eval(value))
+        end
+        additional_values
       end
   end
 )
