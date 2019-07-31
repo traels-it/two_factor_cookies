@@ -1,5 +1,7 @@
 TwoFactorCookies.const_set('TwoFactorAuthenticationController',
   Class.new(TwoFactorCookies.configuration.two_factor_authentication_controller_parent) do
+    skip_before_action :two_factor_authenticate! if TwoFactorCookies.configuration.skip_before_action
+
     def show
       send_otp unless otp_already_sent?
 
