@@ -104,54 +104,6 @@ module TwoFactorCookies
       end
     end
 
-    describe 'user' do
-      it 'uses current_user if current_user exists' do
-        ApplicationController.any_instance.stubs(:current_user).returns(user)
-        TwoFactorCookies::TwoFactorAuthenticationController.any_instance.expects(:user_model).never
-        login user
-        follow_redirect!
-
-        get two_factor_cookies.show_two_factor_authentication_path
-
-        assert_response :success
-      end
-
-      it 'looks in the session for user_id or unauthenticated_id, when there is no current_user' do
-        TwoFactorCookies::TwoFactorAuthenticationController.any_instance.expects(:user_model).returns(User)
-        login user
-        follow_redirect!
-
-        assert_response :success
-      end
-    end
-
-    describe 'it handles namespaced user models' do
-      let(:user) { Namespace::User.create(username: 'user@email.com', password: 'password', phone: '12341234', confirmed_phone_number: true, enabled_two_factor: true) }
-
-      before do
-        TwoFactorCookies.configure do |config|
-          config.user_model_namespace = 'Namespace'
-          config.user_model_name = :user
-        end
-      end
-
-      after do
-        TwoFactorCookies.configure do |config|
-          config.user_model_namespace = nil
-          config.user_model_name = :user
-        end
-      end
-
-      it 'calls the namespaced user model' do
-        Namespace::User.stubs(:find).returns(user)
-        Namespace::User.any_instance.expects(:phone).returns(user.phone)
-
-        get show_two_factor_authentication_path
-
-        assert_response :success
-      end
-    end
-
     describe 'it places any additional authentication values defined in configuration in the mfa cookie' do
       let(:good_params) { { two_factor_authentication: { one_time_password: '123321' } } }
 
