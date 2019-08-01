@@ -17,11 +17,21 @@ module TwoFactorAuthenticate
 
     def two_factor_approved?
       return false if cookies.encrypted[:mfa].nil?
-
-      parsed_cookies = JSON.parse(cookies.encrypted[:mfa]).symbolize_keys
-      #return false if parsed_cookies[:customer_no] != current_company.customer_no # TODO: Hook up with configurable options
       return false if parsed_cookies[:user_name] != current_user.public_send(TwoFactorCookies.configuration.username_field_name)
+      return false unless additional_authentication_values_approved?
 
       parsed_cookies[:approved]
+    end
+
+    def additional_authentication_values_approved?
+      TwoFactorCookies.configuration.additional_authentication_values.each_pair do |key, value|
+        return false if parsed_cookies[key] != eval(value)
+      end
+
+      true
+    end
+
+    def parsed_cookies
+      JSON.parse(cookies.encrypted[:mfa]).symbolize_keys
     end
 end

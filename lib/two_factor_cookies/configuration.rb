@@ -27,7 +27,7 @@ module TwoFactorCookies
       @layout_path = nil
       @two_factor_authentication_controller_parent = '::ApplicationController'
 
-      @additional_authentication_values = nil
+      @additional_authentication_values = {}
 
       @update_params = nil
 
