@@ -3,7 +3,8 @@ module TwoFactorCookies
     attr_accessor :otp_generation_secret_key, :two_factor_authentication_success_route, :confirm_phone_number_success_route,
       :toggle_two_factor_success_route, :two_factor_authentication_expiry, :otp_expiry, :twilio_account_sid,
       :twilio_phone_number, :twilio_auth_token, :phone_number_field_name, :user_model_name, :user_model_namespace, :username_field_name,
-      :two_factor_authentication_controller_parent, :skip_before_action, :layout_path, :additional_authentication_values
+      :two_factor_authentication_controller_parent, :skip_before_action, :layout_path, :additional_authentication_values,
+      :update_params
 
     def initialize
       @otp_generation_secret_key = nil
@@ -27,6 +28,8 @@ module TwoFactorCookies
       @two_factor_authentication_controller_parent = '::ApplicationController'
 
       @additional_authentication_values = nil
+
+      @update_params = nil
     end
   end
 end

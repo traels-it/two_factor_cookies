@@ -33,4 +33,7 @@ TwoFactorCookies.configure do |config|
   # the value is the method used to find whatever value you want as a string. Example:
   # { customer_no: 'current_company.customer_no' }
   # config.additional_authentication_values = nil
+
+  # any params sent along when enabling 2fa that needs to be updated on the user model, for example a phone number
+  # config.update_params = nil
 end

@@ -13,23 +13,23 @@ module TwoFactorCookies
         flash[:alert] = I18n.t('two_factor_cookies.confirm_phone_number.flash.wrong_one_time_password')
       end
 
-      redirect_to main_app.public_send(
+      redirect_to mus.public_send(
         TwoFactorCookies.configuration.confirm_phone_number_success_route,
-        current_user.id.to_i)
+        current_user.id)
     end
 
     def toggle_two_factor
       if toggle_two_factor_params[:enabled_two_factor] == '1'
-        # TODO: Validate the phone number before attempting to send text
         current_user.enable_two_factor!
+        current_user.update(update_params) if TwoFactorCookies::configuration.update_params
         set_authenticated_cookie
       else
         current_user.disable_two_factor!
         current_user.disaffirm_phone_number!
       end
 
-      redirect_to main_app.public_send(
-        TwoFactorCookies.configuration.toggle_two_factor_success_route, current_user.id.to_i
+      redirect_to mus.public_send(
+        TwoFactorCookies.configuration.toggle_two_factor_success_route, current_user.id
       )
     end
 
@@ -46,7 +46,15 @@ module TwoFactorCookies
       end
 
       def toggle_two_factor_params
-        params.require(TwoFactorCookies.configuration.user_model_name).permit(:enabled_two_factor)
+        params.require(TwoFactorCookies.configuration.user_model_name).permit(
+          :enabled_two_factor,
+        )
+      end
+
+      def update_params
+        params.require(TwoFactorCookies.configuration.user_model_name).permit(
+          TwoFactorCookies::configuration.update_params
+        )
       end
 
       def user
