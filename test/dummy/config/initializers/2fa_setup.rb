@@ -26,7 +26,7 @@ TwoFactorCookies.configure do |config|
   # In order to know which user is attempting to login, the two factor authentication controller checks current_user. It
   # looks at its parent for this method. The default parent is ApplicationController. If you use devise or have
   # implemented current_user elsewhere, you need to supply the parent constant here
-  # config.two_factor_authentication_controller_parent = ApplicationController
+  # config.two_factor_authentication_controller_parent = '::ApplicationController'
 
   # If you check for additional values when determining if a user is authenticated, you need to tell the controller how
   # to determine these values. Add a hash of key-value pairs here, where the key is the name, you want in the cookie,
