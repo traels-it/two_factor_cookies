@@ -1,9 +1,9 @@
 module TwoFactorAuthenticate
   extend ActiveSupport::Concern
 
-    included do
-      before_action :two_factor_authenticate!
-    end
+  included do
+    before_action :two_factor_authenticate!
+  end
 
   private
 
