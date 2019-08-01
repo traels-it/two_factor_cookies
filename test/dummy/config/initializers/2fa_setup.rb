@@ -12,7 +12,6 @@ TwoFactorCookies.configure do |config|
   config.twilio_auth_token = ENV['TWILIO_AUTH_TOKEN']
 
   # user model
-
   # user_model_name is used as the permit option in toggle_two_factor_controller
   config.user_model_name = :user
   config.phone_number_field_name = :phone
@@ -37,4 +36,8 @@ TwoFactorCookies.configure do |config|
 
   # any params sent along when enabling 2fa that needs to be updated on the user model, for example a phone number
   # config.update_params = nil
+
+  # If another engine than main_app contains the routes you want the 2fa controllers to redirect to, write the engine
+  # name here as a string
+  #config.engine_name = 'main_app'
 end
