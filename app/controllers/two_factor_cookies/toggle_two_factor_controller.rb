@@ -47,13 +47,13 @@ TwoFactorCookies.const_set('ToggleTwoFactorController',
 
       def toggle_two_factor_params
         params.require(TwoFactorCookies.configuration.user_model_name).permit(
-          :enabled_two_factor,
+          :enabled_two_factor
         )
       end
 
       def update_params
         params.require(TwoFactorCookies.configuration.user_model_name).permit(
-          TwoFactorCookies::configuration.update_params
+          TwoFactorCookies.configuration.update_params
         )
       end
   end
