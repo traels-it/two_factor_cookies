@@ -7,7 +7,7 @@ TwoFactorCookies.const_set('TwoFactorAuthenticationController',
     def show
       send_otp unless otp_already_sent?
 
-      render :show, locals: { user: user }
+      render :show, locals: { user: current_user }
     end
 
     def update
@@ -47,7 +47,7 @@ TwoFactorCookies.const_set('TwoFactorAuthenticationController',
         generated = TwoFactorCookies::OneTimePasswordGenerator.generate_code
         TwoFactorCookies::TextMessage.send(
           code: generated[:code],
-          user: user
+          user: current_user
         )
 
         set_seed_cookie(generated[:seed])
@@ -66,7 +66,7 @@ TwoFactorCookies.const_set('TwoFactorAuthenticationController',
       def set_seed_cookie(seed)
         cookies.delete(:mfa)
         cookies.encrypted[:mfa] = {
-          value: JSON.generate(seed: seed, user_name: user.public_send(TwoFactorCookies.configuration.username_field_name)),
+          value: JSON.generate(seed: seed, user_name: current_user.public_send(TwoFactorCookies.configuration.username_field_name)),
           expires: TwoFactorCookies.configuration.otp_expiry
         }
       end
@@ -75,24 +75,10 @@ TwoFactorCookies.const_set('TwoFactorAuthenticationController',
         JSON.parse(cookies.encrypted[:mfa]).symbolize_keys
       end
 
-      def user
-        return current_user if current_user.present?
-
-        user_id = session[:user_id] || session[:unauthenticated_user_id]
-        @user ||= user_model.find(user_id)
-      end
-
-      def user_model
-        user_model = ''
-        user_model += "#{TwoFactorCookies.configuration.user_model_namespace}::" if TwoFactorCookies.configuration.user_model_namespace
-        user_model += TwoFactorCookies.configuration.user_model_name.to_s.capitalize
-        user_model.constantize
-      end
-
       def standard_values
         {
           approved: true,
-          user_name: user.public_send(TwoFactorCookies.configuration.username_field_name)
+          user_name: current_user.public_send(TwoFactorCookies.configuration.username_field_name)
         }
       end
 

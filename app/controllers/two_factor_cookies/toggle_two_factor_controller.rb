@@ -56,9 +56,5 @@ TwoFactorCookies.const_set('ToggleTwoFactorController',
           TwoFactorCookies::configuration.update_params
         )
       end
-
-      def user
-        current_user
-      end
   end
 )
