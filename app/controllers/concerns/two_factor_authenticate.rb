@@ -19,8 +19,8 @@ module TwoFactorAuthenticate
       return false if cookies.encrypted[:mfa].nil?
 
       parsed_cookies = JSON.parse(cookies.encrypted[:mfa]).symbolize_keys
-      return false if parsed_cookies[:customer_no] != current_company.customer_no
-      return false if parsed_cookies[:user_name] != current_user.username
+      #return false if parsed_cookies[:customer_no] != current_company.customer_no # TODO: Hook up with configurable options
+      return false if parsed_cookies[:user_name] != current_user.public_send(TwoFactorCookies.configuration.username_field_name)
 
       parsed_cookies[:approved]
     end
