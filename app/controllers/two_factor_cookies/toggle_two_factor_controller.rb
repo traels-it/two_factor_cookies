@@ -1,5 +1,5 @@
-module TwoFactorCookies
-  class ToggleTwoFactorController < TwoFactorCookies::TwoFactorAuthenticationController
+TwoFactorCookies.const_set('ToggleTwoFactorController',
+  Class.new('TwoFactorCookies::TwoFactorAuthenticationController'.constantize) do
     def update
       if TwoFactorCookies::OneTimePasswordGenerator.verify_code(
         confirm_phone_number_params[:one_time_password],
@@ -13,23 +13,23 @@ module TwoFactorCookies
         flash[:alert] = I18n.t('two_factor_cookies.confirm_phone_number.flash.wrong_one_time_password')
       end
 
-      redirect_to mus.public_send(
+      redirect_to eval(TwoFactorCookies.configuration.engine_name).public_send(
         TwoFactorCookies.configuration.confirm_phone_number_success_route,
-        current_user.id)
+        current_user.to_param)
     end
 
     def toggle_two_factor
       if toggle_two_factor_params[:enabled_two_factor] == '1'
         current_user.enable_two_factor!
-        current_user.update(update_params) if TwoFactorCookies::configuration.update_params
+        current_user.update(update_params) if TwoFactorCookies.configuration.update_params
         set_authenticated_cookie
       else
         current_user.disable_two_factor!
         current_user.disaffirm_phone_number!
       end
 
-      redirect_to mus.public_send(
-        TwoFactorCookies.configuration.toggle_two_factor_success_route, current_user.id
+      redirect_to eval(TwoFactorCookies.configuration.engine_name).public_send(
+        TwoFactorCookies.configuration.toggle_two_factor_success_route, current_user.to_param
       )
     end
 
@@ -61,4 +61,4 @@ module TwoFactorCookies
         current_user
       end
   end
-end
+)
