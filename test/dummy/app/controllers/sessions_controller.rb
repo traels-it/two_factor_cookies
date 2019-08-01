@@ -3,7 +3,7 @@ class SessionsController < ApplicationController
 
   def new
     if (user = User.logon(params[:username], params[:password]))
-      if two_factor_authenticate?(user)
+      if two_factor_authenticate!
         session[:unauthenticated_user_id] = user.id
         redirect_to two_factor_cookies.show_two_factor_authentication_path
       else
