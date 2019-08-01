@@ -24,7 +24,7 @@ module TwoFactorCookies
       @confirm_phone_number_success_route = nil
       @skip_before_action = false
       @layout_path = nil
-      @two_factor_authentication_controller_parent = ::ApplicationController
+      @two_factor_authentication_controller_parent = '::ApplicationController'
 
       @additional_authentication_values = nil
     end

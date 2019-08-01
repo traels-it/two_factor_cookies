@@ -1,5 +1,5 @@
 TwoFactorCookies.const_set('TwoFactorAuthenticationController',
-  Class.new(TwoFactorCookies.configuration.two_factor_authentication_controller_parent) do
+  Class.new(TwoFactorCookies.configuration.two_factor_authentication_controller_parent.constantize) do
     layout TwoFactorCookies.configuration.layout_path if TwoFactorCookies.configuration.layout_path
 
     skip_before_action :two_factor_authenticate! if TwoFactorCookies.configuration.skip_before_action # TODO: skal navnet også være configurable? Eller er det altid den samme action?
@@ -14,7 +14,7 @@ TwoFactorCookies.const_set('TwoFactorAuthenticationController',
       if otp_verified?
         set_authenticated_cookie
         authenticate_user!
-        redirect_to main_app.public_send(TwoFactorCookies.configuration.two_factor_authentication_success_route) # TODO: I mus skal main_app.public_send være mus.public_send. Hvordan gør jeg det configurable? .global_variable_set?
+        redirect_to mus.public_send(TwoFactorCookies.configuration.two_factor_authentication_success_route) # TODO: I mus skal main_app.public_send være mus.public_send. Hvordan gør jeg det configurable? .global_variable_set?
       else
         flash[:alert] = I18n.t('two_factor_cookies.errors.wrong_one_time_password')
         redirect_to two_factor_cookies.show_two_factor_authentication_path

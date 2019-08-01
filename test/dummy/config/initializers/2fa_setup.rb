@@ -31,6 +31,6 @@ TwoFactorCookies.configure do |config|
   # If you check for additional values when determining if a user is authenticated, you need to tell the controller how
   # to determine these values. Add a hash of key-value pairs here, where the key is the name, you want in the cookie,
   # the value is the method used to find whatever value you want as a string. Example:
-  # { customer_no: 'current_customer.customer_no' }
+  # { customer_no: 'current_company.customer_no' }
   # config.additional_authentication_values = nil
 end
