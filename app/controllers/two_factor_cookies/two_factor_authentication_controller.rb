@@ -13,8 +13,7 @@ TwoFactorCookies.const_set('TwoFactorAuthenticationController',
     def update
       if otp_verified?
         set_authenticated_cookie
-        authenticate_user!
-        redirect_to mus.public_send(TwoFactorCookies.configuration.two_factor_authentication_success_route) # TODO: I mus skal main_app.public_send være mus.public_send. Hvordan gør jeg det configurable? .global_variable_set?
+        redirect_to public_send(TwoFactorCookies.configuration.two_factor_authentication_success_route) # TODO: I mus skal main_app.public_send være mus.public_send. Hvordan gør jeg det configurable? .global_variable_set?
       else
         flash[:alert] = I18n.t('two_factor_cookies.errors.wrong_one_time_password')
         redirect_to two_factor_cookies.show_two_factor_authentication_path
@@ -81,11 +80,6 @@ TwoFactorCookies.const_set('TwoFactorAuthenticationController',
 
         user_id = session[:user_id] || session[:unauthenticated_user_id]
         @user ||= user_model.find(user_id)
-      end
-
-      def authenticate_user!
-        session[:user_id] = user.to_param
-        session.delete(:unauthenticated_user_id)
       end
 
       def user_model
