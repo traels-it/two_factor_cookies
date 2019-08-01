@@ -1,5 +1,4 @@
 class SessionsController < ApplicationController
-  include TwoFactorAuthenticate
 
   def new
     if (user = User.logon(params[:username], params[:password]))

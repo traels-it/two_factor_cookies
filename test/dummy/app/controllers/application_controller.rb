@@ -1,4 +1,6 @@
 class ApplicationController < ActionController::Base
+  include TwoFactorAuthenticate
+
   def current_user
     @current_user ||= User.first
   end
