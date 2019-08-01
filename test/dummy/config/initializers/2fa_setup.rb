@@ -21,7 +21,6 @@ TwoFactorCookies.configure do |config|
   config.two_factor_authentication_success_route = :root_path
   config.toggle_two_factor_success_route = :edit_user_path
   config.confirm_phone_number_success_route = :edit_user_path
-  config.skip_before_action = false
   #config.layout_path = nil
   # In order to know which user is attempting to login, the two factor authentication controller checks current_user. It
   # looks at its parent for this method. The default parent is ApplicationController. If you use devise or have
