@@ -9,7 +9,7 @@ How to use my plugin.
 Add this line to your application's Gemfile:
 
 ```ruby
-gem 'two_factor_cookies', '0.1.0'
+gem 'two_factor_cookies', '0.1.1'
 ```
 
 And then execute:
