@@ -1,9 +1,7 @@
 # TwoFactorCookies
-Simple two factor logon - with Twilio SMS for code delivery
+Simple two factor logon using Twilio SMS for code delivery and ROTP fpr code generation and verification.
 The aim is to be configurable and work with as many kinds of authentication as possible.
-
-## Usage
-How to use my plugin.
+All information needed is placed in encrypted cookies.
 
 ## Installation
 Add this line to your application's Gemfile:
@@ -80,18 +78,19 @@ end
 
 ```
 
-In your ApplicationController you must include TwoFactorAuthentication
+In your ApplicationController you must include TwoFactorAuthenticate
 ```ruby
 class ApplicationController < ActionController::Base
   include TwoFactorAuthenticate
 ```
 
+### Using your own template for submitting otps
 The gem includes a template for submitting one time passwords. To override it, a partial named 'show' must be placed under `two_factor_cookies/two_factor_authentication`
 
 ### Necessary methods on your user model
 TwoFactorCookies relies on a number of methods being present on your user model: `enabled_two_factor?`, `confirmed_phone_number?`, `disable_two_factor!`, `enable_two_factor!`, `confirm_phone_number!` and `disaffirm_phone_number!`.
 
-If using standard ActiveRecord or Mongoid, `enabled_two_factor?` and `confirmed_phone_number?` will be automatically added, if your user model has fields named respectively `enabled_two_factor` and `confirmed_phone_number`
+If using ActiveRecord or Mongoid, `enabled_two_factor?` and `confirmed_phone_number?` will be automatically added, if your user model has fields named `enabled_two_factor` and `confirmed_phone_number`
 
 #### Example implementations
 ```ruby
@@ -110,9 +109,6 @@ If for example you want to delete the phone number, when disabling 2fa, it could
 ```
 
 When disabling two factor authentication, `disaffirm_phone_number!` is also called and a new confirmation of the phone number is required, if 2fa is enabled again.
-
-## Contributing
-Contribution directions go here.
 
 ## License
 The gem is available as open source under the terms of the [MIT License](https://opensource.org/licenses/MIT).
