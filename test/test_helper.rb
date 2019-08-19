@@ -20,6 +20,24 @@ if ActiveSupport::TestCase.respond_to?(:fixture_path=)
   ActiveSupport::TestCase.fixtures :all
 end
 
+module LogContentAssertions
+  def assert_log_changes new_text
+    # Ensure log file exists
+    FileUtils.touch Rails.root.join('log', 'test.log')
+
+    old_log_content = File.read(Rails.root.join('log', 'test.log'))
+    yield
+    new_log_content = File.read(Rails.root.join('log', 'test.log'))
+    new_log_content.slice!(old_log_content)
+
+    assert_includes new_log_content, new_text
+  end
+end
+
+[ActionDispatch::IntegrationTest].each do |test_constant|
+  test_constant.include(LogContentAssertions)
+end
+
 def login(user)
   post login_path, params: { username: user.username, password: user.password }
 end

@@ -45,6 +45,18 @@ module TwoFactorCookies
         assert_not user.enabled_two_factor?
         assert_not user.confirmed_phone_number?
       end
+
+      it 'writes to the log, when toggling 2fa on' do
+        assert_log_changes I18n.t('two_factor_cookies.logger.toggle_2fa_on', id: user.id) do
+          patch two_factor_cookies.toggle_two_factor_path(user_id: user.id), params: { user: { enabled_two_factor: '1'}, user_id: user.id}
+        end
+      end
+
+      it 'writes to the log, when toggling 2fa off' do
+        assert_log_changes I18n.t('two_factor_cookies.logger.toggle_2fa_off', id: user.id) do
+          patch two_factor_cookies.toggle_two_factor_path(user_id: user.id), params: { user: { enabled_two_factor: '0'}, user_id: user.id}
+        end
+      end
     end
 
     describe 'configurations' do

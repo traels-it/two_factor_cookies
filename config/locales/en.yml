@@ -14,3 +14,9 @@ en:
       flash:
         confirmed: Phone number confirmed
         wrong_one_time_password: Wrong code - try again
+    logger:
+      toggle_2fa_on: "Two factor toggled on for user id %{id}"
+      toggle_2fa_off: "Two factor toggled off for user id %{id}"
+      confirm_phone_number_success: "Confirmation of phone number %{phone_number} successful for user id %{id}"
+      confirm_phone_number_fail: "Confirmation of phone number %{phone_number} failed for user id %{id}"
+
