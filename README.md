@@ -94,21 +94,41 @@ If using ActiveRecord or Mongoid, `enabled_two_factor?` and `confirmed_phone_num
 
 #### Example implementations
 ```ruby
-   def disable_two_factor!
-    self.enabled_two_factor = false
-    save
-  end
+def disable_two_factor!
+  self.enabled_two_factor = false
+  save
+end
 ```
 If for example you want to delete the phone number, when disabling 2fa, it could be done here
 ```ruby
-  def disaffirm_phone_number!
-    self.confirmed_phone_number = false
-    self.phone_number = nil
-    save
-  end
+def disaffirm_phone_number!
+  self.confirmed_phone_number = false
+  self.phone_number = nil
+  save
+end
 ```
 
 When disabling two factor authentication, `disaffirm_phone_number!` is also called and a new confirmation of the phone number is required, if 2fa is enabled again.
+
+## ToggleTwoFactorController
+### Toggling two factor on and off
+Toggling two factor on and off is handled by the `ToggleTwoFactorController` in the action also named `toggle_two_factor`. It requires whatever form is used for this to supply parameters in the format
+```ruby
+{ user: { enabled_two_factor: '1' } }
+```
+`user` in the param is the name of the user model in the app, taken from the configuration. If enabled_two_factor is '1', two factor is toggled on. If enabled_two_factor is anything else, two factor will be toggled off
+
+#### Logging
+The gem can be configured to log, when 2fa is toggled on or off. To do this you must configure `logging_module` with a module that has `log` defined in whatever way makes sense in your project. The method will be passed a message consisting of a translation with a user id.
+```
+module Log
+  extend ActiveSupport::Concern
+
+  def log(message)
+    Rails.logger.info message
+  end
+end
+```
 
 ## License
 The gem is available as open source under the terms of the [MIT License](https://opensource.org/licenses/MIT).
