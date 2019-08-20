@@ -119,14 +119,10 @@ Toggling two factor on and off is handled by the `ToggleTwoFactorController` in 
 `user` in the param is the name of the user model in the app, taken from the configuration. If enabled_two_factor is '1', two factor is toggled on. If enabled_two_factor is anything else, two factor will be toggled off
 
 #### Logging
-The gem can be configured to log, when 2fa is toggled on or off. To do this you must configure `logging_module` with a module that has `log` defined in whatever way makes sense in your project. The method will be passed a message consisting of a translation with a user id.
-```
-module Log
-  extend ActiveSupport::Concern
-
-  def log(message)
-    Rails.logger.info message
-  end
+The gem can be configured to log, when 2fa is toggled on or off. To do this you must configure `logging_method_name` with the name of a method, you implement, that logs in whatever way makes sense in your project. The method will be passed a message consisting of a translation with a user id.
+```ruby
+def log(message)
+  Rails.logger.info message
 end
 ```
 
