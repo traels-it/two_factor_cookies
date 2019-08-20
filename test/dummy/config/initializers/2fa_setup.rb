@@ -22,8 +22,8 @@ TwoFactorCookies.configure do |config|
   config.toggle_two_factor_success_route = :edit_user_path
   config.confirm_phone_number_success_route = :edit_user_path
   #config.layout_path = nil
-  # The module responsible for logging. If set to nil, nothing will be logged.
-  config.logging_module = 'Log'
+  # The method responsible for logging. If set to nil, nothing will be logged.
+  config.logging_method_name = 'log'
 
   # In order to know which user is attempting to login, the two factor authentication controller checks current_user. It
   # looks at its parent for this method. The default parent is ApplicationController. If you use devise or have

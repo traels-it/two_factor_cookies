@@ -9,4 +9,8 @@ class ApplicationController < ActionController::Base
   def current_company
     OpenStruct.new(customer_no: 100_001)
   end
+
+  def log(message)
+    Rails.logger.info message
+  end
 end

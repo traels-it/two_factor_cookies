@@ -1,7 +1,5 @@
 TwoFactorCookies.const_set('ToggleTwoFactorController',
   Class.new('TwoFactorCookies::TwoFactorAuthenticationController'.constantize) do
-    include TwoFactorCookies.configuration.logging_module.constantize if TwoFactorCookies.configuration.logging_module
-
     def update
       if TwoFactorCookies::OneTimePasswordGenerator.verify_code(
         confirm_phone_number_params[:one_time_password],
@@ -25,11 +23,11 @@ TwoFactorCookies.const_set('ToggleTwoFactorController',
         current_user.enable_two_factor!
         current_user.update(update_params) if TwoFactorCookies.configuration.update_params
         set_authenticated_cookie
-        log(I18n.t('two_factor_cookies.logger.toggle_2fa_on', id: current_user.id)) if TwoFactorCookies.configuration.logging_module
+        public_send(TwoFactorCookies.configuration.logging_method_name, I18n.t('two_factor_cookies.logger.toggle_2fa_on', id: current_user.id)) if TwoFactorCookies.configuration.logging_method_name
       else
         current_user.disable_two_factor!
         current_user.disaffirm_phone_number!
-        log(I18n.t('two_factor_cookies.logger.toggle_2fa_off', id: current_user.id)) if TwoFactorCookies.configuration.logging_module
+        public_send(TwoFactorCookies.configuration.logging_method_name, I18n.t('two_factor_cookies.logger.toggle_2fa_off', id: current_user.id)) if TwoFactorCookies.configuration.logging_method_name
       end
 
       redirect_to eval(TwoFactorCookies.configuration.engine_name).public_send(
