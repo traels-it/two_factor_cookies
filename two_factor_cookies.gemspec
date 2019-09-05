@@ -20,7 +20,7 @@ Gem::Specification.new do |spec|
 
   spec.files = Dir["{app,config,db,lib}/**/*", "MIT-LICENSE", "Rakefile", "README.md"]
 
-  spec.add_dependency "rails", "~> 5.0"
+  spec.add_dependency "rails", ">= 5.0"
   spec.add_dependency 'rotp', '5.1.0'
   spec.add_dependency 'twilio-ruby', '~> 5.25.1'
 
