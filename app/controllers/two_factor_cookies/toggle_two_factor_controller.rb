@@ -15,7 +15,8 @@ TwoFactorCookies.const_set('ToggleTwoFactorController',
 
       redirect_to eval(TwoFactorCookies.configuration.engine_name).public_send(
         TwoFactorCookies.configuration.confirm_phone_number_success_route,
-        current_user.to_param)
+        current_user.to_param
+      )
     end
 
     def toggle_two_factor
