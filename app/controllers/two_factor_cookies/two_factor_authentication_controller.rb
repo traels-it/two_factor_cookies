@@ -33,6 +33,8 @@ TwoFactorCookies.const_set('TwoFactorAuthenticationController',
       end
 
       def otp_verified?
+        return false unless cookies[:mfa].present?
+
         TwoFactorCookies::OneTimePasswordGenerator.verify_code(
           two_factor_authentication_params[:one_time_password],
           parsed_mfa_cookie[:seed]

@@ -63,6 +63,12 @@ module TwoFactorCookies
       end
     end
 
+    it 'does not attempt to parse an unexisting mfa cookie' do
+      TwoFactorCookies::OneTimePasswordGenerator.expects(:verify_code).never
+
+      patch two_factor_cookies.update_two_factor_authentication_path, params: { two_factor_authentication: { one_time_password: '123321' } }
+    end
+
     describe '#resend_code' do
       before do
         login user
