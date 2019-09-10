@@ -3,8 +3,8 @@ TwoFactorCookies.configure do |config|
   config.otp_generation_secret_key = 'AXFGXT27ZK4PFSPWOD5COTZ6D56SPNYH'
 
   # cookie expiry
-  config.two_factor_authentication_expiry = 30.days.from_now
-  config.otp_expiry = 30.minutes.from_now
+  config.two_factor_authentication_expiry = 30.days
+  config.otp_expiry = 30.minutes
 
   # text message sending
   config.twilio_account_sid = ENV['TWILIO_ACCOUNT_SID']

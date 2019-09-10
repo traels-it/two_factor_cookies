@@ -59,7 +59,7 @@ TwoFactorCookies.const_set('TwoFactorAuthenticationController',
           value: JSON.generate(
             standard_values.merge(additional_authentication_values)
           ),
-          expires: TwoFactorCookies.configuration.two_factor_authentication_expiry
+          expires: Time.zone.now + TwoFactorCookies.configuration.two_factor_authentication_expiry
         }
       end
 
@@ -67,7 +67,7 @@ TwoFactorCookies.const_set('TwoFactorAuthenticationController',
         cookies.delete(:mfa)
         cookies.encrypted[:mfa] = {
           value: JSON.generate(seed: seed, user_name: current_user.public_send(TwoFactorCookies.configuration.username_field_name)),
-          expires: TwoFactorCookies.configuration.otp_expiry
+          expires: Time.zone.now + TwoFactorCookies.configuration.otp_expiry
         }
       end
 

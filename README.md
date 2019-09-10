@@ -29,10 +29,11 @@ TwoFactorCookies.configure do |config|
   config.otp_generation_secret_key =  MUST BE FILLED
 
   # Cookie expiry
+  # The values need to be an amount of seconds, for instance `30.minutes`. The gem adds this amount to the Time.zone.now and uses this to set the cookie's expiry
   # When a user will need to perform 2fa again
-  # config.two_factor_authentication_expiry = 30.days.from_now
+  # config.two_factor_authentication_expiry = 30.days
   # How much time a user has to type in the otp sent to his phone
-  # config.otp_expiry = 30.minutes.from_now
+  # config.otp_expiry = 30.minutes
 
   # Twilio API credentials
   config.twilio_account_sid = MUST BE FILLED

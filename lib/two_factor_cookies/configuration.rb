@@ -8,8 +8,8 @@ module TwoFactorCookies
 
     def initialize
       @otp_generation_secret_key = nil
-      @two_factor_authentication_expiry = 30.days.from_now
-      @otp_expiry = 30.minutes.from_now
+      @two_factor_authentication_expiry = 30.days
+      @otp_expiry = 30.minutes
 
       @twilio_account_sid = nil
       @twilio_phone_number = nil
