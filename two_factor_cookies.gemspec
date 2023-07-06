@@ -17,6 +17,7 @@ Gem::Specification.new do |spec|
   # Prevent pushing this gem to RubyGems.org. To allow pushes either set the 'allowed_push_host'
   # to allow pushing to a single host or delete this section to allow pushing to any host.
   spec.metadata["allowed_push_host"] = 'https://rubygems.org'
+  spec.metadata["source_code_uri"] = 'https://github.com/traels-it/two_factor_cookies'
 
   spec.files = Dir["{app,config,db,lib}/**/*", "MIT-LICENSE", "Rakefile", "README.md"]
 

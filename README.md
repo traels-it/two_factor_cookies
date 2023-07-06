@@ -127,5 +127,8 @@ def log(message)
 end
 ```
 
+## Using the gem in development
+When using the gem in development, Twilio is never hit. Instead the generated OTP is written to `tmp/otp.txt`
+
 ## License
 The gem is available as open source under the terms of the [MIT License](https://opensource.org/licenses/MIT).
